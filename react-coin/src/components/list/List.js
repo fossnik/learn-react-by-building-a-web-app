@@ -1,4 +1,5 @@
 import React from 'react'
+import { handleResponse } from '../../helpers';
 
 class List extends React.Component {
 	constructor() {
@@ -17,18 +18,18 @@ class List extends React.Component {
 		this.setState({loading:true});
 
 		fetch('https://api.udilia.com/coins/v1/cryptocurrencies?page=1&perPage=20')
-			.then(response => {
-				return response.json().then(json => {
-					return response.ok ? json : Promise.reject(json)
+			.then(handleResponse)
+			.then((data) => {
+				this.setState({
+					currencies: data.currencies,
+					loading: false
 				})
 			})
-			.then((data) => {
-				this.setState({currencies: data.currencies, loading: false});
-				console.log('Success', data)
-			})
 			.catch((error) => {
-				this.setState({ error: error.errorMessage, loading: false});
-				console.log('Error', error)
+				this.setState({
+					error: error.errorMessage,
+					loading: false
+				})
 			})
 	}
 
