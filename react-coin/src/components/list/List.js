@@ -1,6 +1,7 @@
 import React from 'react'
 import { handleResponse } from '../../helpers'
 import {API_URL} from '../../config'
+import './Table.css'
 
 class List extends React.Component {
 	constructor() {
@@ -44,7 +45,7 @@ class List extends React.Component {
 		return (
 			<div>
 				{this.state.currencies.map(currency => (
-					<div>{currency.id}</div>
+					<div key={currency.id}>{currency.id}</div>
 				))}
 			</div>
 		)
