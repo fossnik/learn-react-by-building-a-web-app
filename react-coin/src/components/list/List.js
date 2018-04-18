@@ -2,6 +2,7 @@ import React from 'react'
 import { handleResponse } from '../../helpers'
 import {API_URL} from '../../config'
 import './Table.css'
+import Loading from '../common/Loading'
 
 class List extends React.Component {
 	constructor() {
@@ -39,15 +40,19 @@ class List extends React.Component {
 		if (percent > 0)
 			return <span className="percent-raised">{percent}% &uarr;</span>;
 		else if (percent < 0)
-			return <span className="percent-raised">{percent}% &darr;</span>;
+			return <span className="percent-fallen">{percent}% &darr;</span>;
 		else
-			return <span>{percent}</span>
+			return <span>{percent}</span>;
 	}
 
 	render() {
-		if (this.state.loading) {
-			return <div>Loading...</div>
-		}
+		const { loading, error, currencies } = this.state;
+
+		if (loading)
+			return <div className="loading-container"><Loading/></div>;
+
+		if (error)
+			return <div className="error">{error}</div>;
 
 		return (
 			<div className="Table-container">
@@ -61,7 +66,7 @@ class List extends React.Component {
 						</tr>
 					</thead>
 					<tbody className="Table-body">
-					{this.state.currencies.map(currency => (
+					{currencies.map(currency => (
 						<tr key={currency.id}>
 							<td>
 								<span className="Table-rank">{currency.rank}</span>
